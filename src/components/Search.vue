@@ -16,19 +16,37 @@
         <div>
             <b-container class="mt-3">
                 <h1>Quem você está buscando?</h1>
-                <b-form-input class="mt-4" size="lg" v-model="text" placeholder="Digite o id do usuário"></b-form-input>
+                <b-form-input class="mt-4" size="lg" v-model="searchInput" placeholder="Digite o id do usuário"></b-form-input>
             </b-container>
         </div>
         <div>
             <h5 class="mt-5">Está perdido? Clique abaixo e veja todos os usuários</h5>
-            <b-btn>Ver usuários</b-btn>
+            <b-btn @click="showTable">Ver usuários</b-btn>
+            <UserList v-if="show" v-bind:users="users"/>
         </div>
     </div>
 </template>
 
 <script>
+import UserList from './UserList';
+
 export default {
-    name: 'Search'
+    name: 'Search',
+    components: {
+        UserList,
+    },
+    props: ['users'],
+    data() {
+        return {
+            show: false,
+            searchInput: ''
+        }
+    },
+    methods: {
+        showTable() {
+            this.show = !this.show;
+        }
+    }
 }
 </script>
 

@@ -79,18 +79,22 @@
                         ></b-form-input>
                     </b-form-group>
                 </b-form-group>
-                <b-button type="submit" variant="primary">Submit</b-button>
+                <b-button type="submit" variant="primary">Cadastrar</b-button>
             </b-form>
-            <a href="#">Já sou cadastrado.</a>
+            <router-link to="/signin">Já sou cadastrado.</router-link>
         </b-container>
     </div>    
 </template>
 
 <script>
+import AuthenticationService from '../services/AuthenticationService';
+
 export default {
     name: 'SignUp',
     data() {
         return {
+            users: [],
+            error: '',
             form: {
                 nome: '',
                 email: '',
@@ -102,10 +106,29 @@ export default {
             }
         }
     },
+    
     methods: {
-        onSubmit(evt) {
+        async onSubmit(evt) {
             evt.preventDefault()
-            alert(JSON.stringify(this.form))
+            const response = await AuthenticationService.register({
+                nome: this.form.nome,
+                email: this.form.email,
+                senha: this.form.senha,
+                telefones: {
+                    ddd: this.form.telefones.ddd,
+                    numero: this.form.telefones.numero
+                }
+            });
+            // const newUser = {
+            //     nome: this.form.nome,
+            //     email: this.form.email,
+            //     senha: this.form.senha,
+            //     telefones: {
+            //         ddd: this.form.telefones.ddd,
+            //         numero: this.form.telefones.numero
+            //     }
+            // }
+            // this.$emit('add-user', newUser);
         },
     }
 }
@@ -116,10 +139,6 @@ export default {
         margin: auto;
         height: 50%;
         width: 33%;
-    }
-
-    #form-container {
-        background-color: white;
     }
 </style>
 

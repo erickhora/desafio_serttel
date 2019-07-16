@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="body">
         <img class="mr-4" src="../assets/logo-serttel.jpg">
         <b-container id="form-container">
             <b-form @submit="onSubmit">
@@ -29,6 +29,10 @@
                     placeholder="Digite seu senha:"
                     ></b-form-input>
                 </b-form-group>
+                <b-button type="submit" variant="primary">
+                    Entrar
+                    <router-link to="/search"></router-link>
+                </b-button>
             </b-form>
         </b-container>
     </div>
@@ -56,5 +60,9 @@ export default {
 </script>
 
 <style scoped>
-
+    #body {
+        margin: auto;
+        height: 50%;
+        width: 33%;
+    }
 </style>
