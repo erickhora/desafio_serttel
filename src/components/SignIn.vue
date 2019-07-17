@@ -1,6 +1,6 @@
 <template>
     <div id="body">
-        <img class="mr-4" src="../assets/logo-serttel.jpg">
+        <img class="mr-4" src="../assets/serttel.jpg">
         <b-container id="form-container">
             <b-alert variant="danger" v-if="gotError">{{ message }}</b-alert>
             <b-form @submit="login">
@@ -68,8 +68,8 @@ export default {
             }).catch(err => {
                 console.log(err)
                 router.push(router.currentRoute)
-                gotError = true;
-                message = err
+                this.gotError = true;
+                this.message = err
             })
             // this.emitMethod()
         },

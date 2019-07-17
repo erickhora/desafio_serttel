@@ -1,9 +1,6 @@
 <template>
   <div id="app">
     <SignUp/>
-    <!-- <SignIn v-bind:users="users"/> -->
-    <!-- <Search v-bind:users="users" v-on:del-user="deleteUser" /> -->
-    <!-- <UserList v-bind:users="users"/> -->
   </div>
 </template>
 

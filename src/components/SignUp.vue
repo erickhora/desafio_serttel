@@ -1,8 +1,7 @@
 <template>
     <div id="body">
-        <img class="mr-4" src="../assets/logo-serttel.jpg">
+        <img class="mr-4" src="../assets/serttel.jpg">
         <b-container id="form-container">
-            <b-alert variant="danger" v-if="gotError">{{ message }}</b-alert>
             <b-form @submit="register">
                 <b-form-group
                 id="form-group-nome"
@@ -92,8 +91,6 @@ export default {
     name: 'SignUp',
     data() {
         return {
-            message: '',
-            gotError: false,
             form: {
                 nome: '',
                 email: '',
@@ -117,13 +114,11 @@ export default {
                     numero: this.form.telefones.numero
                 }
             }).then(res => {
+                console.log(res.message)
                 router.push({ name: 'signin' })
-                console.log(res.statusText)
             }).catch(err => {
                 console.log(err)
-                router.push(router.currentRoute)
-                this.message = err
-                gotError = true
+                router.push({name: 'home'})
             })
         }
     }

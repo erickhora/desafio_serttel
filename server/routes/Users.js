@@ -12,7 +12,6 @@ router.use(cors());
 process.env.SECRET_KEY = 'secret';
 
 router.post('/register', (req, res) => {
-    console.log(req.body);
     const userData = {
         nome: req.body.nome,
         email: req.body.email,
@@ -31,7 +30,11 @@ router.post('/register', (req, res) => {
                 userData.senha = hash
                 User.create(userData)
                     .then(user => {
-                        res.json({status: `Usuário registrado com sucesso: id: ${user._id}, dados: ${user}`})
+                        console.log('************' + user);
+                        res.json({
+                            message: `Usuário registrado com sucesso: id: ${user._id}, dados: ${user}`,
+                            user: user
+                        })
                     })
                     .catch(err => {
                         res.send('error: ' + err)
