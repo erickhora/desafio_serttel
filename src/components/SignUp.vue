@@ -2,7 +2,8 @@
     <div id="body">
         <img class="mr-4" src="../assets/logo-serttel.jpg">
         <b-container id="form-container">
-            <b-form @submit="onSubmit">
+            <b-alert variant="danger" v-if="gotError">{{ message }}</b-alert>
+            <b-form @submit="register">
                 <b-form-group
                 id="form-group-nome"
                 label="Nome:"
@@ -42,9 +43,6 @@
                     required
                     placeholder="Digite uma senha"
                     ></b-form-input>
-                    <b-form-text id="password-help-block">
-                        Sua senha deve conter no mínimo 6 caracteres.
-                    </b-form-text>
                 </b-form-group>
                 <b-form-group
                 id="form-group-telefone"
@@ -87,14 +85,15 @@
 </template>
 
 <script>
-import AuthenticationService from '../services/AuthenticationService';
+import axios from 'axios'
+import router from '../router'
 
 export default {
     name: 'SignUp',
     data() {
         return {
-            users: [],
-            error: '',
+            message: '',
+            gotError: false,
             form: {
                 nome: '',
                 email: '',
@@ -108,9 +107,8 @@ export default {
     },
     
     methods: {
-        async onSubmit(evt) {
-            evt.preventDefault()
-            const response = await AuthenticationService.register({
+        register() {
+            axios.post('http://localhost:3000/users/register', {
                 nome: this.form.nome,
                 email: this.form.email,
                 senha: this.form.senha,
@@ -118,18 +116,16 @@ export default {
                     ddd: this.form.telefones.ddd,
                     numero: this.form.telefones.numero
                 }
-            });
-            // const newUser = {
-            //     nome: this.form.nome,
-            //     email: this.form.email,
-            //     senha: this.form.senha,
-            //     telefones: {
-            //         ddd: this.form.telefones.ddd,
-            //         numero: this.form.telefones.numero
-            //     }
-            // }
-            // this.$emit('add-user', newUser);
-        },
+            }).then(res => {
+                router.push({ name: 'signin' })
+                console.log(res.statusText)
+            }).catch(err => {
+                console.log(err)
+                router.push(router.currentRoute)
+                this.message = err
+                gotError = true
+            })
+        }
     }
 }
 </script>

@@ -1,18 +1,25 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const port = process.env.PORT || 3000;
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.urlencoded({extended: false}));
 
-const users = require('./routes/api/users');
-const auth = require('./routes/api/auth');
+const mongoURI = 'mongodb+srv://erickhora:YxattRXVHVxNYBQK@serttelbd-rgptb.mongodb.net/users?retryWrites=true&w=majority';
 
-app.use('/api/auth', auth);
-app.use('/api/users', users);
+mongoose.connect(mongoURI, {useNewUrlParser: true})
+    .then(() => console.log('MongoDB Conectado.'))
+    .catch(err => console.log(err));
 
-const port = process.env.PORT || 3000;
+const Users = require('./routes/Users');
 
-app.listen(port, () => console.log(`Servidor inicializado na porta ${port}`));
+app.use('/users', Users);
+
+app.listen(port, () => {
+    console.log(`Servidor inicializado na porta ${port}`)
+});

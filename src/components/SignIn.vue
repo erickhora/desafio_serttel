@@ -2,7 +2,8 @@
     <div id="body">
         <img class="mr-4" src="../assets/logo-serttel.jpg">
         <b-container id="form-container">
-            <b-form @submit="onSubmit">
+            <b-alert variant="danger" v-if="gotError">{{ message }}</b-alert>
+            <b-form @submit="login">
                 <b-form-group
                 id="form-group-email"
                 label="Email:"
@@ -31,7 +32,6 @@
                 </b-form-group>
                 <b-button type="submit" variant="primary">
                     Entrar
-                    <router-link to="/search"></router-link>
                 </b-button>
             </b-form>
         </b-container>
@@ -39,11 +39,16 @@
 </template>
 
 <script>
+import axios from 'axios'
+import router from '../router'
+// import EventBus from './EventBus'
+
 export default {
     name: 'SignIn',
-    props: ['users'],
     data() {
         return {
+            gotError: false,
+            message: '',
             form: {
                 email: '',
                 senha: ''
@@ -51,10 +56,27 @@ export default {
         }
     },
     methods: {
-        onSubmit(evt) {
-            evt.preventDefault()
-            alert(JSON.stringify(this.form))
+        login() {
+            axios.post('http://localhost:3000/users/login', {
+                email: this.form.email,
+                senha: this.form.senha
+            }).then(res => {
+                localStorage.setItem('usertoken', res.data)
+                this.form.email = ''
+                this.form.senha = ''
+                router.push({ name: 'search' })
+            }).catch(err => {
+                console.log(err)
+                router.push(router.currentRoute)
+                gotError = true;
+                message = err
+            })
+            // this.emitMethod()
         },
+
+        // emitMethod() {
+        //     EventBus.$emit('logged-in', 'loggedin')
+        // }
     }
 }
 </script>
